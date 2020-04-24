@@ -1,41 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const useGiphy = (query, numberResult) => {
-  const [result, setResult] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        /* const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=Hhbv6st4fTi0nMlOXxdRHfBjReZQXjWY&q=${query}&limit=10&offset=0&rating=G&lang=en
-              `);
-        const json = await response.json();
-        
-        setResult(
-          response.data.map((item) => {
-            return item.images.preview.mp4;
-          })
-        );*/
-        const response = await axios.get(
-          `https://api.giphy.com/v1/gifs/search?api_key=Hhbv6st4fTi0nMlOXxdRHfBjReZQXjWY&q=${query}&limit=${numberResult}&offset=0&rating=G&lang=en`
-        );
-        setResult(
-          response.data.data.map((item) => {
-            return item.images.preview.mp4;
-          })
-        );
-      } catch (error) {
-        alert(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    if (query !== '') fetchData();
-  }, [query, isLoading, result, numberResult]);
-  return [result];
-};
+import React, { useState } from 'react';
+import useGiphy from './useGiphy';
 
 function App() {
   const [search, setSearch] = useState('');
@@ -75,7 +39,12 @@ function App() {
       {isLoading ? (
         <p>Searching...</p>
       ) : (
-        result.map((item) => <video autoPlay loop key={item} src={item} />)
+        result.map((item) => (
+          <div key={item.id}>
+            <h3>{item.title}</h3>
+            <video autoPlay loop src={item.link} />
+          </div>
+        ))
       )}
     </div>
   );
