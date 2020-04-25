@@ -1,9 +1,10 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useContext } from 'react';
 import { BsToggleOn, BsToggleOff } from 'react-icons/bs';
-import ThemeContext from '../contexts/ThemeContext';
-
+import { Context as ThemeContext } from '../contexts/ThemeContext';
+//import ThemeContext from '../contexts/ThemeContext';
+/*
 const initialState = {
-  toggleTheme: true,
+  isLightTheme: true,
   light: { syntax: '#555', ui: '#ddd', bg: '#eee' },
   dark: { syntax: '#ddd', ui: '#333', bg: '#555' },
 };
@@ -13,50 +14,42 @@ const themeReducer = (state, action) => {
     case 'SWITCH_THEME':
       return {
         ...state,
-        toggleTheme: !state.toggleTheme,
-      };
-    case 'SWITCH_DARK':
-      return {
-        ...state,
-        theme: 'dark',
-      };
-    case 'SWITCH_lIGHT':
-      return {
-        ...state,
-        theme: 'light',
+        isLightTheme: !state.isLightTheme,
       };
     default:
       return state;
   }
-};
-
-export const { Context, Provider } = ThemeContext(themeReducer, initialState);
+};*/
+/*
+const switchState = (dispatch) => {
+  return () => dispatch({ type: 'SWITCH_THEME' });
+};*/
+/*
+export const { Context, Provider } = ThemeContext(
+  themeReducer,
+   { switchState },
+  initialState
+);*/
 
 const Theme = () => {
-  const [state, dispatch] = useReducer(themeReducer, initialState);
-  const { toggleTheme } = state;
+  const { state, dispatch } = useContext(ThemeContext);
+  const { isLightTheme } = state;
+  //const theme = isLightTheme ? light : dark;
   const button = {
     fontSize: '1.5rem',
   };
-  useEffect(() => {
-    console.log(toggleTheme);
-  });
 
   return (
     <div>
-      {toggleTheme ? (
+      {isLightTheme ? (
         <BsToggleOn
           style={button}
-          onClick={() => {
-            dispatch({ type: 'SWITCH_THEME' });
-          }}
+          onClick={() => dispatch({ type: 'SWITCH_THEME' })}
         />
       ) : (
         <BsToggleOff
           style={button}
-          onClick={() => {
-            dispatch({ type: 'SWITCH_THEME' });
-          }}
+          onClick={() => dispatch({ type: 'SWITCH_THEME' })}
         />
       )}
     </div>

@@ -1,11 +1,15 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useContext } from 'react';
 import useGiphy from '../useGiphy';
+import { Context as ThemeContext } from '../contexts/ThemeContext';
 
 const Search = () => {
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
   const [numberResult, setNumberResult] = useState(10);
   const [result, isLoading, hasMore, error] = useGiphy(query, numberResult);
+  const { state } = useContext(ThemeContext);
+  const { isLightTheme, light, dark } = state;
+  const theme = isLightTheme ? light : dark;
 
   const observer = useRef();
   const lastGifsRef = useCallback(
@@ -29,7 +33,7 @@ const Search = () => {
   };
 
   return (
-    <div>
+    <div style={{ background: theme.bg, color: theme.syntax }}>
       <h1>GIF SEARCHER</h1>
       <form onSubmit={onSubmit}>
         <input
