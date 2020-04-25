@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import useGiphy from './useGiphy';
+import Header from './components/Header';
 
 function App() {
   const [search, setSearch] = useState('');
@@ -29,16 +30,18 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>GIF SEARCHER</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder='Search for GIFS !'
-        />
-        <button type='submit'>Search</button>
-        {/*<label>
+    <>
+      <Header />
+      <div>
+        <h1>GIF SEARCHER</h1>
+        <form onSubmit={onSubmit}>
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder='Search for GIFS !'
+          />
+          <button type='submit'>Search</button>
+          {/*<label>
           GIFS par page :
           <select
             value={numberResult}
@@ -50,28 +53,29 @@ function App() {
             <option value='50'>50</option>
           </select>
         </label>*/}
-      </form>
-      <br />
-      {result.map((item, index) => {
-        if (result.length === index + 1) {
-          return (
-            <div key={item.id} ref={lastGifsRef}>
-              <h3>{item.title}</h3>
-              <video autoPlay loop src={item.link} />
-            </div>
-          );
-        } else {
-          return (
-            <div key={item.id}>
-              <h3>{item.title}</h3>
-              <video autoPlay loop src={item.link} />
-            </div>
-          );
-        }
-      })}
-      <div>{isLoading && 'Loading...'}</div>
-      <div>{error && 'Error'}</div>
-    </div>
+        </form>
+        <br />
+        {result.map((item, index) => {
+          if (result.length === index + 1) {
+            return (
+              <div key={item.id} ref={lastGifsRef}>
+                <h3>{item.title}</h3>
+                <video autoPlay loop src={item.link} />
+              </div>
+            );
+          } else {
+            return (
+              <div key={item.id}>
+                <h3>{item.title}</h3>
+                <video autoPlay loop src={item.link} />
+              </div>
+            );
+          }
+        })}
+        <div>{isLoading && 'Loading...'}</div>
+        <div>{error && 'Error'}</div>
+      </div>
+    </>
   );
 }
 

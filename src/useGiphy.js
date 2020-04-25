@@ -18,7 +18,7 @@ const useGiphy = (query, numberResult) => {
         const response = await axios.get(url, {
           cancelToken: new axios.CancelToken((c) => (cancel = c)),
         });
-
+        console.log(response);
         setResult(
           response.data.data.map((item) => {
             return {
