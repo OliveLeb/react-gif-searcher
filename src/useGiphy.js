@@ -4,23 +4,21 @@ import axios from 'axios';
 const useGiphy = (query, numberResult) => {
   const [result, setResult] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+
+  const url = `https://api.giphy.com/v1/gifs/search?api_key=Hhbv6st4fTi0nMlOXxdRHfBjReZQXjWY&q=${query}&limit=${numberResult}&offset=0&rating=G&lang=en`;
 
   useEffect(() => {
+    let cancel;
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        /* const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=Hhbv6st4fTi0nMlOXxdRHfBjReZQXjWY&q=${query}&limit=10&offset=0&rating=G&lang=en
-                    `);
-              const json = await response.json();
-              
-              setResult(
-                response.data.map((item) => {
-                  return item.images.preview.mp4;
-                })
-              );*/
-        const response = await axios.get(
-          `https://api.giphy.com/v1/gifs/search?api_key=Hhbv6st4fTi0nMlOXxdRHfBjReZQXjWY&q=${query}&limit=${numberResult}&offset=0&rating=G&lang=en`
-        );
+        setError(false);
+        const response = await axios.get(url, {
+          cancelToken: new axios.CancelToken((c) => (cancel = c)),
+        });
+
         setResult(
           response.data.data.map((item) => {
             return {
@@ -30,16 +28,20 @@ const useGiphy = (query, numberResult) => {
             };
           })
         );
+        setHasMore(
+          response.data.pagination.total_count > response.data.pagination.count
+        );
       } catch (error) {
-        alert(error);
+        if (axios.isCancel(error)) return;
+        setError(true);
       } finally {
         setIsLoading(false);
+        return () => cancel();
       }
     };
-
     if (query !== '') fetchData();
-  }, [query, isLoading, numberResult]);
-  return [result];
+  }, [numberResult, query, url, hasMore]);
+  return [result, isLoading, hasMore, error];
 };
 
 export default useGiphy;
