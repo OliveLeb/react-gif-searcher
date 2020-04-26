@@ -5,7 +5,7 @@ import { Context as ThemeContext } from '../contexts/ThemeContext';
 const Search = () => {
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
-  const [numberResult, setNumberResult] = useState(10);
+  const [numberResult, setNumberResult] = useState(25);
   const [result, isLoading, hasMore, error] = useGiphy(query, numberResult);
   const { state } = useContext(ThemeContext);
   const { isLightTheme, light, dark } = state;
@@ -18,7 +18,7 @@ const Search = () => {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          setNumberResult((prevNumberResult) => prevNumberResult + 10);
+          setNumberResult((prevNumberResult) => prevNumberResult + 25);
         }
       });
       if (node) observer.current.observe(node);
@@ -33,7 +33,14 @@ const Search = () => {
   };
 
   return (
-    <div style={{ background: theme.bg, color: theme.syntax }}>
+    <div
+      style={{
+        background: theme.bg,
+        color: theme.syntax,
+        minHeight: '100vh',
+        textAlign: 'center',
+      }}
+    >
       <h1>GIF SEARCHER</h1>
       <form onSubmit={onSubmit}>
         <input
@@ -44,23 +51,30 @@ const Search = () => {
         <button type='submit'>Search</button>
       </form>
       <br />
-      {result.map((item, index) => {
-        if (result.length === index + 1) {
-          return (
-            <div key={item.id} ref={lastGifsRef}>
-              <h3>{item.title}</h3>
-              <video autoPlay loop src={item.link} />
-            </div>
-          );
-        } else {
-          return (
-            <div key={item.id}>
-              <h3>{item.title}</h3>
-              <video autoPlay loop src={item.link} />
-            </div>
-          );
-        }
-      })}
+      <div
+        style={{
+          display: 'flex',
+          flexFlow: 'row wrap',
+          width: '60%',
+          margin: 'auto',
+        }}
+      >
+        {result.map((item, index) => {
+          if (result.length === index + 1) {
+            return (
+              <div key={item.id} ref={lastGifsRef}>
+                <video autoPlay loop src={item.link} />
+              </div>
+            );
+          } else {
+            return (
+              <div key={item.id}>
+                <video autoPlay loop src={item.link} />
+              </div>
+            );
+          }
+        })}
+      </div>
       <div>{isLoading && 'Loading...'}</div>
       <div>{error && 'Error'}</div>
     </div>

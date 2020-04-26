@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Context as ThemeContext } from '../contexts/ThemeContext';
+import Navigation from './navigation/Navigation';
 
 const Header = () => {
   const { state } = useContext(ThemeContext);
@@ -7,7 +8,13 @@ const Header = () => {
   const theme = isLightTheme ? light : dark;
   return (
     <>
-      <div style={{ background: theme.bg, color: theme.syntax }}>
+      <div
+        style={{
+          background: theme.bg,
+          color: theme.syntax,
+          textAlign: 'center',
+        }}
+      >
         <p>
           2020 - Made By{' '}
           <a
@@ -30,6 +37,7 @@ const Header = () => {
           API
         </p>
       </div>
+      <Navigation />
     </>
   );
 };

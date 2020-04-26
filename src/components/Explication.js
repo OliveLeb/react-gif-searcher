@@ -7,7 +7,9 @@ const Explication = () => {
   const theme = isLightTheme ? light : dark;
 
   return (
-    <div style={{ background: theme.bg, color: theme.syntax }}>
+    <div
+      style={{ background: theme.bg, color: theme.syntax, minHeight: '100vh' }}
+    >
       Comment j'ai fait ?
     </div>
   );
