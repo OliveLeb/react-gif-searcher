@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { BsToggleOn, BsToggleOff } from 'react-icons/bs';
+import { FaSun, FaMoon } from 'react-icons/fa';
 import { Context as ThemeContext } from '../contexts/ThemeContext';
 
 const Theme = () => {
@@ -13,12 +13,12 @@ const Theme = () => {
   return (
     <div>
       {isLightTheme ? (
-        <BsToggleOn
+        <FaSun
           style={button}
           onClick={() => dispatch({ type: 'SWITCH_THEME' })}
         />
       ) : (
-        <BsToggleOff
+        <FaMoon
           style={button}
           onClick={() => dispatch({ type: 'SWITCH_THEME' })}
         />

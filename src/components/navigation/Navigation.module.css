@@ -1,0 +1,25 @@
+.nav {
+  padding: 10px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  margin: auto;
+}
+
+.link {
+  margin: 10px;
+  padding: 5px;
+  font-size: 1.2rem;
+  border-bottom: 10px solid;
+  border-image-slice: 1;
+  border-width: 5px;
+  border-image-source: linear-gradient(to left, #6d33d0, #d53a9d);
+  background: transparent;
+  transition: 0.3s;
+}
+
+.link:hover {
+  color: #fff !important;
+  background: linear-gradient(to left, #6d33d0, #d53a9d);
+}
