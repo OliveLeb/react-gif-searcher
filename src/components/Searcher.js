@@ -1,14 +1,22 @@
-import React, { useState, useRef, useCallback, useContext } from 'react';
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
 import { BsSearch } from 'react-icons/bs';
+//import Spinner from 'react-bootstrap/Spinner';
 import useGiphy from '../useGiphy';
 import { Context as ThemeContext } from '../contexts/ThemeContext';
+import GifsList from './GifsList';
 
 const Search = () => {
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
-  const [numberResult, setNumberResult] = useState(40);
+  const [numberResult, setNumberResult] = useState(20);
 
-  const [result, isLoading, hasMore, error, totalCount] = useGiphy(
+  const [gifs, isLoading, hasMore, error, totalCount] = useGiphy(
     query,
     numberResult
   );
@@ -16,25 +24,56 @@ const Search = () => {
   const { isLightTheme, light, dark } = state;
   const theme = isLightTheme ? light : dark;
 
-  const observer = useRef();
+  const observer = useRef(null);
   const lastGifsRef = useCallback(
     (node) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setNumberResult((prevNumberResult) => prevNumberResult + 40);
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            setNumberResult((prevNumberResult) => prevNumberResult + 10);
+          }
+        },
+        {
+          threshold: 1.0,
         }
-      });
+      );
       if (node) observer.current.observe(node);
     },
     [isLoading, hasMore]
   );
 
+  const gifRef = useRef(null);
+  const gifObserver = useCallback((node) => {
+    const intObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio > 0) {
+          const currentGif = entry.target;
+
+          const newGifSrc = currentGif.src;
+          if (!newGifSrc) {
+            console.error('Gif source invalid');
+          } else {
+            currentGif.src = newGifSrc;
+          }
+          intObs.unobserve(node);
+        }
+      });
+    });
+    intObs.observe(node);
+  }, []);
+  useEffect(() => {
+    gifRef.current = document.querySelectorAll('.gifRendered');
+    if (gifRef.current) {
+      gifRef.current.forEach((gif) => gifObserver(gif));
+    }
+  }, [gifObserver, gifRef, gifs]);
+
   const onSubmit = (e) => {
     e.preventDefault();
     setQuery(search);
-    setNumberResult(10);
+    setNumberResult(20);
   };
 
   return (
@@ -42,7 +81,7 @@ const Search = () => {
       style={{
         background: theme.ui,
         color: theme.syntax,
-        minHeight: '100vh',
+
         textAlign: 'center',
         paddingTop: '50px',
       }}
@@ -89,43 +128,29 @@ const Search = () => {
         {' '}
         {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
       </div>
-      <div style={{ width: 'calc(200px * 4 + 3em)', margin: 'auto' }}>
-        <div style={{ columns: 4, columnGap: '1em' }}>
-          {result.map((item, index) => {
-            if (result.length === index + 1) {
-              return (
-                <div
-                  key={item.id}
-                  ref={lastGifsRef}
-                  style={{ width: '200px', marginBottom: '1em' }}
-                >
-                  <video
-                    autoPlay
-                    loop
-                    src={item.link}
-                    style={{ width: '100%', height: 'auto' }}
-                  />
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  key={item.id}
-                  style={{ width: '200px', marginBottom: '1em' }}
-                >
-                  <video
-                    autoPlay
-                    loop
-                    src={item.link}
-                    style={{ width: '100%', height: 'auto' }}
-                  />
-                </div>
-              );
-            }
-          })}
-        </div>
+
+      {
+        <GifsList
+          gifs={gifs}
+          lastGifsRef={lastGifsRef}
+          numberResult={numberResult}
+        />
+      }
+
+      <div>
+        {
+          isLoading && 'Loading ...'
+          //(
+
+          // <>
+          //   <Spinner animation='grow' variant='danger' />
+          //  <Spinner animation='grow' variant='warning' />
+          //    <Spinner animation='grow' variant='info' />
+          //  </>
+          //  )
+        }
       </div>
-      <div>{isLoading && 'Loading...'}</div>
+
       <div>{error && 'Error'}</div>
     </div>
   );

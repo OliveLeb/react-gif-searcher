@@ -25,19 +25,19 @@ const Header = () => {
           >
             Olivier Lebel
           </a>{' '}
-          with the help of{' '}
-          <a
+          powered by GIHPY
+          {/*<a
             href='https://giphy.com/'
-            target='_blank'
+          target='_blank'
             rel='noopener noreferrer'
-            style={{ color: theme.syntax }}
+           style={{ color: theme.syntax }}
           >
-            Giphy's
-          </a>{' '}
-          API
+            GIPHY
+         </a>*/}
         </p>
+
+        <Navigation />
       </div>
-      <Navigation />
     </>
   );
 };

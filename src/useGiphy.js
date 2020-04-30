@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const useGiphy = (query, numberResult) => {
-  const [result, setResult] = useState([]);
+  const [gifs, setGifs] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -19,7 +19,8 @@ const useGiphy = (query, numberResult) => {
         const response = await axios.get(url, {
           cancelToken: new axios.CancelToken((c) => (cancel = c)),
         });
-        setResult(
+
+        setGifs(
           response.data.data.map((item) => {
             return {
               id: item.id,
@@ -32,6 +33,7 @@ const useGiphy = (query, numberResult) => {
             };
           })
         );
+
         setTotalCount(response.data.pagination.total_count);
         setHasMore(totalCount > response.data.pagination.count);
       } catch (error) {
@@ -43,8 +45,9 @@ const useGiphy = (query, numberResult) => {
       }
     };
     if (query !== '') fetchData();
-  }, [numberResult, query, url, hasMore, totalCount]);
-  return [result, isLoading, hasMore, error, totalCount];
+  }, [query, url, totalCount]);
+
+  return [gifs, isLoading, hasMore, error, totalCount];
 };
 
 export default useGiphy;
