@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const useGiphy = (query, numberResult) => {
+const useGiphy = (query, numberResult, offsetGif) => {
   const [gifs, setGifs] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [hasMore, setHasMore] = useState(false);
 
-  const url = `https://api.giphy.com/v1/gifs/search?api_key=g5XEHugGVJ9S3c3ojjpKmHs0facB024N&q=${query}&limit=${numberResult}&offset=0&rating=G&lang=en`;
+  const url = `https://api.giphy.com/v1/gifs/search?api_key=g5XEHugGVJ9S3c3ojjpKmHs0facB024N&q=${query}&limit=${numberResult}&offset=${offsetGif}&rating=G&lang=en`;
+
+  useEffect(() => {
+    setGifs([]);
+  }, [query]);
 
   useEffect(() => {
     let cancel;
@@ -20,22 +24,28 @@ const useGiphy = (query, numberResult) => {
           cancelToken: new axios.CancelToken((c) => (cancel = c)),
         });
 
-        setGifs(
-          response.data.data.map((item) => {
-            return {
-              id: item.id,
-              link: item.images.preview.mp4,
-              title: item.title,
-              size: {
-                height: item.images.preview.height,
-                width: item.images.preview.width,
-              },
-            };
-          })
-        );
-
+        setGifs((prevGifs) => {
+          return [
+            ...new Set([
+              ...prevGifs,
+              ...response.data.data.map((item) => {
+                return {
+                  id: item.id,
+                  link: item.images.preview.mp4,
+                  title: item.title,
+                  size: {
+                    height: item.images.preview.height,
+                    width: item.images.preview.width,
+                  },
+                };
+              }),
+            ]),
+          ];
+        });
         setTotalCount(response.data.pagination.total_count);
-        setHasMore(totalCount > response.data.pagination.count);
+        setHasMore(
+          response.data.pagination.total_count > response.data.pagination.count
+        );
       } catch (error) {
         if (axios.isCancel(error)) return;
         setError(true);
@@ -45,7 +55,7 @@ const useGiphy = (query, numberResult) => {
       }
     };
     if (query !== '') fetchData();
-  }, [query, url, totalCount]);
+  }, [query, url, numberResult, offsetGif]);
 
   return [gifs, isLoading, hasMore, error, totalCount];
 };

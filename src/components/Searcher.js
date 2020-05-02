@@ -15,10 +15,12 @@ const Search = () => {
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
   const [numberResult, setNumberResult] = useState(20);
+  const [offsetGif, setOffsetGif] = useState(0);
 
   const [gifs, isLoading, hasMore, error, totalCount] = useGiphy(
     query,
-    numberResult
+    numberResult,
+    offsetGif
   );
   const { state } = useContext(ThemeContext);
   const { isLightTheme, light, dark } = state;
@@ -32,7 +34,7 @@ const Search = () => {
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
-            setNumberResult((prevNumberResult) => prevNumberResult + 10);
+            setOffsetGif((prevOffSetGif) => prevOffSetGif + numberResult);
           }
         },
         {
@@ -41,21 +43,24 @@ const Search = () => {
       );
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasMore]
+    [isLoading, hasMore, numberResult]
   );
 
   const gifRef = useRef(null);
   const gifObserver = useCallback((node) => {
     const intObs = new IntersectionObserver((entries) => {
+      //console.log(entries);
       entries.forEach((entry) => {
-        if (entry.intersectionRatio > 0) {
+        // if (entry.intersectionRatio > 0) {
+        if (entry.isIntersecting) {
           const currentGif = entry.target;
-
-          const newGifSrc = currentGif.src;
+          console.log(`${currentGif.title} lazy loading`);
+          const newGifSrc = currentGif.dataset.src;
           if (!newGifSrc) {
             console.error('Gif source invalid');
           } else {
             currentGif.src = newGifSrc;
+            //currentGif.classList.remove('gifRendered');
           }
           intObs.unobserve(node);
         }
@@ -63,10 +68,12 @@ const Search = () => {
     });
     intObs.observe(node);
   }, []);
+
   useEffect(() => {
     gifRef.current = document.querySelectorAll('.gifRendered');
     if (gifRef.current) {
       gifRef.current.forEach((gif) => gifObserver(gif));
+      console.log(gifRef.current);
     }
   }, [gifObserver, gifRef, gifs]);
 
@@ -77,82 +84,84 @@ const Search = () => {
   };
 
   return (
-    <div
-      style={{
-        background: theme.ui,
-        color: theme.syntax,
-
-        textAlign: 'center',
-        paddingTop: '50px',
-      }}
-    >
-      <h1>GIF SEARCHER</h1>
-      <form onSubmit={onSubmit}>
-        <div
-          style={{
-            display: 'flex',
-            width: 'calc(200px * 4 + 3em)',
-            margin: 'auto',
-          }}
-        >
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder='Search for GIFS !'
+    <>
+      <div
+        style={{
+          background: theme.ui,
+          color: theme.syntax,
+          minHeight: '100vh',
+          textAlign: 'center',
+          paddingTop: '50px',
+        }}
+      >
+        <h1>GIF SEARCHER</h1>
+        <form onSubmit={onSubmit}>
+          <div
             style={{
-              border: 'none',
-              height: '2em',
-              width: '100%',
-              paddingLeft: '10px',
-              fontSize: '1.5rem',
-            }}
-          />
-          <button
-            type='submit'
-            style={{
-              alignSelf: 'center',
-              fontSize: '1.5em',
-              border: 'none',
-              padding: '12px',
-              cursor: 'pointer',
-              background: '#fff',
+              display: 'flex',
+              width: 'calc(200px * 4 + 3em)',
+              margin: 'auto',
             }}
           >
-            {' '}
-            <BsSearch style={{ display: 'block' }} />{' '}
-          </button>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder='Search for GIFS !'
+              style={{
+                border: 'none',
+                height: '2em',
+                width: '100%',
+                paddingLeft: '10px',
+                fontSize: '1.5rem',
+              }}
+            />
+            <button
+              type='submit'
+              style={{
+                alignSelf: 'center',
+                fontSize: '1.5em',
+                border: 'none',
+                padding: '12px',
+                cursor: 'pointer',
+                background: '#fff',
+              }}
+            >
+              {' '}
+              <BsSearch style={{ display: 'block' }} />{' '}
+            </button>
+          </div>
+        </form>
+        <br />
+        <div>
+          {' '}
+          {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
         </div>
-      </form>
-      <br />
-      <div>
-        {' '}
-        {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
-      </div>
 
-      {
-        <GifsList
-          gifs={gifs}
-          lastGifsRef={lastGifsRef}
-          numberResult={numberResult}
-        />
-      }
-
-      <div>
         {
-          isLoading && 'Loading ...'
-          //(
-
-          // <>
-          //   <Spinner animation='grow' variant='danger' />
-          //  <Spinner animation='grow' variant='warning' />
-          //    <Spinner animation='grow' variant='info' />
-          //  </>
-          //  )
+          <GifsList
+            gifs={gifs}
+            lastGifsRef={lastGifsRef}
+            numberResult={numberResult}
+          />
         }
-      </div>
 
-      <div>{error && 'Error'}</div>
-    </div>
+        <div>
+          {
+            isLoading && 'Loading ...'
+            //(
+
+            // <>
+            //   <Spinner animation='grow' variant='danger' />
+            //  <Spinner animation='grow' variant='warning' />
+            //    <Spinner animation='grow' variant='info' />
+            //  </>
+            //  )
+          }
+        </div>
+
+        <div>{error && 'Error'}</div>
+      </div>
+    </>
   );
 };
 
