@@ -31,7 +31,7 @@ const Search = () => {
   const gifById = (idGif) => {
     const oneGif = gifs.find((item) => item.id === idGif);
     return (
-      <GifDetail titre={oneGif.title} id={oneGif.id} link={oneGif.linkDetail} />
+      <GifDetail title={oneGif.title} id={oneGif.id} link={oneGif.linkDetail} />
     );
   };
 
@@ -142,19 +142,20 @@ const Search = () => {
           </div>
         </form>
         <br />
-        <div>
-          {' '}
-          {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
-        </div>
+
         <div>
           {idGif ? (
             gifById(idGif)
           ) : (
-            <GifsList
-              gifs={gifs}
-              lastGifsRef={lastGifsRef}
-              numberResult={numberResult}
-            />
+            <div>
+              {' '}
+              {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
+              <GifsList
+                gifs={gifs}
+                lastGifsRef={lastGifsRef}
+                numberResult={numberResult}
+              />
+            </div>
           )}
         </div>
         <div>{isLoading && 'Loading ...'}</div>

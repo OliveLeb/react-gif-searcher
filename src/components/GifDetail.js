@@ -3,7 +3,7 @@ import React from 'react';
 const GifDetail = ({ title, id, link }) => {
   return (
     <div key={id}>
-      {title}
+      <h2>{title}</h2>
       <img src={link} alt={title} autoPlay />
     </div>
   );

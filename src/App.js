@@ -1,12 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Searcher from './components/Searcher';
 import Header from './components/Header';
 import Explication from './components/Explication';
-//import GifDetail from './components/GifDetail';
 import { Provider as ThemeProvider } from './contexts/ThemeContext';
-//import GifsList from './components/GifsList';
 
 function App() {
   return (
@@ -17,11 +20,14 @@ function App() {
           <Route path='/' exact>
             <Searcher />
           </Route>
+          <Route path='/explication' exact>
+            <Explication />
+          </Route>
           <Route path='/:idGif' exact>
             <Searcher />
           </Route>
-          <Route path='/explication'>
-            <Explication />
+          <Route path='*'>
+            <Redirect to='/' />
           </Route>
         </Switch>
       </Router>
