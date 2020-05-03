@@ -109,7 +109,7 @@ const Search = () => {
           <div
             style={{
               display: 'flex',
-              width: 'calc(200px * 4 + 3em)',
+              width: '100%',
               margin: 'auto',
             }}
           >
@@ -143,21 +143,20 @@ const Search = () => {
         </form>
         <br />
 
-        <div>
-          {idGif ? (
-            gifById(idGif)
-          ) : (
-            <div>
-              {' '}
-              {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
-              <GifsList
-                gifs={gifs}
-                lastGifsRef={lastGifsRef}
-                numberResult={numberResult}
-              />
-            </div>
-          )}
-        </div>
+        {idGif ? (
+          gifById(idGif)
+        ) : (
+          <div>
+            {' '}
+            {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
+            <GifsList
+              gifs={gifs}
+              lastGifsRef={lastGifsRef}
+              numberResult={numberResult}
+            />
+          </div>
+        )}
+
         <div>{isLoading && 'Loading ...'}</div>
 
         <div>{error && 'Error'}</div>
