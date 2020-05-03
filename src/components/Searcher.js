@@ -78,7 +78,6 @@ const Search = () => {
     gifRef.current = document.querySelectorAll('.gifRendered');
     if (gifRef.current) {
       gifRef.current.forEach((gif) => gifObserver(gif));
-      //console.log(gifRef.current);
     }
   }, [gifObserver, gifRef, gifs]);
 

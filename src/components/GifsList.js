@@ -19,7 +19,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 key={item.id}
                 style={{
                   width: '200px',
-                  height: 'auto',
+                  minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
                 }}
               >
                 {
@@ -34,7 +34,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                     className='gifRendered'
                     style={{
                       width: '100%',
-                      minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
+                      height: 'auto',
                       background: 'green',
                     }}
                   />
@@ -47,7 +47,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 key={item.id}
                 style={{
                   width: '200px',
-                  height: 'auto',
+                  minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
                   marginBottom: '10px',
                 }}
               >
@@ -62,7 +62,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                     className='gifRendered'
                     style={{
                       width: '100%',
-                      minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
+                      height: 'auto',
                       background: 'green',
                       display: 'block',
                     }}
