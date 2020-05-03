@@ -5,17 +5,19 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
-//import Spinner from 'react-bootstrap/Spinner';
 import useGiphy from '../useGiphy';
 import { Context as ThemeContext } from '../contexts/ThemeContext';
 import GifsList from './GifsList';
+import GifDetail from './GifDetail';
 
 const Search = () => {
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
   const [numberResult, setNumberResult] = useState(20);
   const [offsetGif, setOffsetGif] = useState(0);
+  const { idGif } = useParams();
 
   const [gifs, isLoading, hasMore, error, totalCount] = useGiphy(
     query,
@@ -25,6 +27,13 @@ const Search = () => {
   const { state } = useContext(ThemeContext);
   const { isLightTheme, light, dark } = state;
   const theme = isLightTheme ? light : dark;
+
+  const gifById = (idGif) => {
+    const oneGif = gifs.find((item) => item.id === idGif);
+    return (
+      <GifDetail titre={oneGif.title} id={oneGif.id} link={oneGif.linkDetail} />
+    );
+  };
 
   const observer = useRef(null);
   const lastGifsRef = useCallback(
@@ -49,12 +58,9 @@ const Search = () => {
   const gifRef = useRef(null);
   const gifObserver = useCallback((node) => {
     const intObs = new IntersectionObserver((entries) => {
-      //console.log(entries);
       entries.forEach((entry) => {
-        // if (entry.intersectionRatio > 0) {
         if (entry.isIntersecting) {
           const currentGif = entry.target;
-          // console.log(`${currentGif.title} lazy loading`);
           const newGifSrc = currentGif.dataset.src;
           if (!newGifSrc) {
             console.error('Gif source invalid');
@@ -140,28 +146,18 @@ const Search = () => {
           {' '}
           {query} {totalCount !== 0 ? totalCount + ' resultats' : null}{' '}
         </div>
-
-        {
-          <GifsList
-            gifs={gifs}
-            lastGifsRef={lastGifsRef}
-            numberResult={numberResult}
-          />
-        }
-
         <div>
-          {
-            isLoading && 'Loading ...'
-            //(
-
-            // <>
-            //   <Spinner animation='grow' variant='danger' />
-            //  <Spinner animation='grow' variant='warning' />
-            //    <Spinner animation='grow' variant='info' />
-            //  </>
-            //  )
-          }
+          {idGif ? (
+            gifById(idGif)
+          ) : (
+            <GifsList
+              gifs={gifs}
+              lastGifsRef={lastGifsRef}
+              numberResult={numberResult}
+            />
+          )}
         </div>
+        <div>{isLoading && 'Loading ...'}</div>
 
         <div>{error && 'Error'}</div>
       </div>

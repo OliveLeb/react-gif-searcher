@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const GifsList = ({ gifs, lastGifsRef }) => {
   return (
@@ -23,21 +24,21 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 }}
               >
                 {
-                  <img
-                    //autoPlay
-                    // loop
-                    data-src={item.link}
-                    src=''
-                    title={item.title}
-                    alt={item.title}
-                    ref={lastGifsRef}
-                    className='gifRendered'
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      background: 'green',
-                    }}
-                  />
+                  <Link to={`/${item.id}`}>
+                    <img
+                      data-src={item.linkPrev}
+                      src=''
+                      title={item.title}
+                      alt={item.title}
+                      ref={lastGifsRef}
+                      className='gifRendered'
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                        background: 'green',
+                      }}
+                    />
+                  </Link>
                 }
               </div>
             );
@@ -52,21 +53,21 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 }}
               >
                 {
-                  <img
-                    //autoPlay
-                    // loop
-                    data-src={item.link}
-                    title={item.title}
-                    alt={item.title}
-                    src=''
-                    className='gifRendered'
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      background: 'green',
-                      display: 'block',
-                    }}
-                  />
+                  <Link to={`/${item.id}`}>
+                    <img
+                      data-src={item.linkPrev}
+                      title={item.title}
+                      alt={item.title}
+                      src=''
+                      className='gifRendered'
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                        background: 'green',
+                        display: 'block',
+                      }}
+                    />
+                  </Link>
                 }
               </div>
             );

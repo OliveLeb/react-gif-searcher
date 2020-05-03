@@ -31,7 +31,8 @@ const useGiphy = (query, numberResult, offsetGif) => {
               ...response.data.data.map((item) => {
                 return {
                   id: item.id,
-                  link: item.images.preview_webp.url,
+                  linkPrev: item.images.original.webp,
+                  linkDetail: item.images.original.url,
                   title: item.title,
                   size: {
                     width: item.images.preview_webp.width,
