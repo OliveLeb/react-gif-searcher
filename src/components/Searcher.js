@@ -54,15 +54,20 @@ const Search = () => {
         // if (entry.intersectionRatio > 0) {
         if (entry.isIntersecting) {
           const currentGif = entry.target;
-          console.log(`${currentGif.title} lazy loading`);
+          // console.log(`${currentGif.title} lazy loading`);
           const newGifSrc = currentGif.dataset.src;
           if (!newGifSrc) {
             console.error('Gif source invalid');
           } else {
             currentGif.src = newGifSrc;
+            currentGif.setAttribute('autoPlay', 'true');
             //currentGif.classList.remove('gifRendered');
           }
-          intObs.unobserve(node);
+          // intObs.unobserve(node);
+        } else {
+          entry.target.removeAttribute('autoPlay');
+          //entry.target.src = '';
+          //intObs.unobserve(node);
         }
       });
     });
@@ -73,7 +78,7 @@ const Search = () => {
     gifRef.current = document.querySelectorAll('.gifRendered');
     if (gifRef.current) {
       gifRef.current.forEach((gif) => gifObserver(gif));
-      console.log(gifRef.current);
+      //console.log(gifRef.current);
     }
   }, [gifObserver, gifRef, gifs]);
 

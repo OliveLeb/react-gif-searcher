@@ -31,17 +31,21 @@ const useGiphy = (query, numberResult, offsetGif) => {
               ...response.data.data.map((item) => {
                 return {
                   id: item.id,
-                  link: item.images.preview.mp4,
+                  // link: item.images.preview.mp4,
+                  link: item.images.preview_webp.url,
                   title: item.title,
                   size: {
-                    height: item.images.preview.height,
-                    width: item.images.preview.width,
+                    //height: item.images.preview.height,
+                    //width: item.images.preview.width,
+                    width: item.images.preview_webp.width,
+                    height: item.images.preview_webp.height,
                   },
                 };
               }),
             ]),
           ];
         });
+        console.log(gifs);
         setTotalCount(response.data.pagination.total_count);
         setHasMore(
           response.data.pagination.total_count > response.data.pagination.count

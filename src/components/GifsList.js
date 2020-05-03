@@ -15,31 +15,59 @@ const GifsList = ({ gifs, lastGifsRef }) => {
         {gifs.map((item, index) => {
           if (gifs.length === index + 1) {
             return (
-              <div key={item.id} style={{ width: '200px', height: 'auto' }}>
-                <video
-                  autoPlay
-                  loop
-                  data-src={item.link}
-                  src='https://via.placeholder.com/200x200'
-                  title={item.title}
-                  ref={lastGifsRef}
-                  className='gifRendered'
-                  style={{ width: '100%', height: 'auto' }}
-                />
+              <div
+                key={item.id}
+                style={{
+                  width: '200px',
+                  height: 'auto',
+                }}
+              >
+                {
+                  <img
+                    //autoPlay
+                    // loop
+                    data-src={item.link}
+                    src=''
+                    title={item.title}
+                    alt={item.title}
+                    ref={lastGifsRef}
+                    className='gifRendered'
+                    style={{
+                      width: '100%',
+                      minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
+                      background: 'green',
+                    }}
+                  />
+                }
               </div>
             );
           } else {
             return (
-              <div key={item.id} style={{ width: '200px', height: 'auto' }}>
-                <video
-                  autoPlay
-                  loop
-                  data-src={item.link}
-                  title={item.title}
-                  src='https://via.placeholder.com/200x200'
-                  className='gifRendered'
-                  style={{ width: '100%', height: 'auto' }}
-                />
+              <div
+                key={item.id}
+                style={{
+                  width: '200px',
+                  height: 'auto',
+                  marginBottom: '10px',
+                }}
+              >
+                {
+                  <img
+                    //autoPlay
+                    // loop
+                    data-src={item.link}
+                    title={item.title}
+                    alt={item.title}
+                    src=''
+                    className='gifRendered'
+                    style={{
+                      width: '100%',
+                      minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
+                      background: 'green',
+                      display: 'block',
+                    }}
+                  />
+                }
               </div>
             );
           }
