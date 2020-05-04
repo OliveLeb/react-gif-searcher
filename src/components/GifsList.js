@@ -8,8 +8,8 @@ const GifsList = ({ gifs, lastGifsRef }) => {
         style={{
           display: 'flex',
           flexFlow: 'row wrap',
-          width: 'calc(200px * 4 + 3em)',
-          justifyContent: 'space-between',
+          maxWidth: 'calc(200px * 4 + 4em)',
+          justifyContent: 'center',
           margin: 'auto',
         }}
       >
@@ -21,6 +21,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 style={{
                   width: '200px',
                   minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
+                  margin: '0 0.5em',
                 }}
               >
                 {
@@ -49,7 +50,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 style={{
                   width: '200px',
                   minHeight: `calc(${item.size.height} * 200 / ${item.size.width})`,
-                  marginBottom: '10px',
+                  margin: '0 0.5em 10px',
                 }}
               >
                 {

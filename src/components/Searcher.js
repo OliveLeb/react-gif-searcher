@@ -96,6 +96,7 @@ const Search = () => {
     e.preventDefault();
     setQuery(search);
     setNumberResult(20);
+    setOffsetGif(0);
   };
 
   return (
@@ -114,7 +115,7 @@ const Search = () => {
           <div
             style={{
               display: 'flex',
-              width: '100%',
+              width: '80%',
               margin: 'auto',
             }}
           >
