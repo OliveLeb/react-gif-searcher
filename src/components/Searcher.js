@@ -5,7 +5,7 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import useGiphy from '../useGiphy';
 import { Context as ThemeContext } from '../contexts/ThemeContext';
@@ -18,6 +18,7 @@ const Search = () => {
   const [numberResult, setNumberResult] = useState(20);
   const [offsetGif, setOffsetGif] = useState(0);
   const { slug } = useParams();
+  const history = useHistory();
 
   const [gifs, isLoading, hasMore, error, totalCount] = useGiphy(
     query,
@@ -94,6 +95,9 @@ const Search = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (slug) {
+      history.push('/');
+    }
     setQuery(search);
     setNumberResult(20);
     setOffsetGif(0);
