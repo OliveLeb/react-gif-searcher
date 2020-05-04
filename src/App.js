@@ -23,7 +23,7 @@ function App() {
           <Route path='/explication' exact>
             <Explication />
           </Route>
-          <Route path='/:idGif' exact>
+          <Route path='/:slug' exact>
             <Searcher />
           </Route>
           <Route path='*'>

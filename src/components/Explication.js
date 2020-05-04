@@ -11,7 +11,7 @@ const Explication = () => {
       style={{
         background: theme.ui,
         color: theme.syntax,
-        minHeight: '100vh',
+        minHeight: 'calc(100vh - 88px)',
         padding: '10px',
       }}
     >
@@ -31,14 +31,17 @@ const Explication = () => {
           <li>Récupération de la valeur du input dans un useState</li>
           <li>Création d'un custom hook</li>
           <li>
-            Envoie du input dans le custom hook + ajout dans l'url de l'api
-            Giphy
+            Envoi du input dans le custom hook + ajout dans l'url de l'api Giphy
           </li>
           <li>UseEffect() => async getData() =>await axios.get(url)</li>
           <li>
-            Pour l'infinite scrolling, utilisation de IntersectionObserver()
+            <ul>
+              Utilisation de IntersectionObserver() :
+              <li>&nbsp;&nbsp; - infinite scrolling</li>
+              <li>&nbsp;&nbsp; - lazy loading + ajout autoPlay</li>
+            </ul>
           </li>
-          <li></li>
+          <li> </li>
           <li></li>
           <li></li>
         </ul>

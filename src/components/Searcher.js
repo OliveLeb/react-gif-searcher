@@ -17,7 +17,7 @@ const Search = () => {
   const [query, setQuery] = useState('');
   const [numberResult, setNumberResult] = useState(20);
   const [offsetGif, setOffsetGif] = useState(0);
-  const { idGif } = useParams();
+  const { slug } = useParams();
 
   const [gifs, isLoading, hasMore, error, totalCount] = useGiphy(
     query,
@@ -28,10 +28,15 @@ const Search = () => {
   const { isLightTheme, light, dark } = state;
   const theme = isLightTheme ? light : dark;
 
-  const gifById = (idGif) => {
-    const oneGif = gifs.find((item) => item.id === idGif);
+  const gifById = (slug) => {
+    const oneGif = gifs.find((item) => item.param === slug);
     return (
-      <GifDetail title={oneGif.title} id={oneGif.id} link={oneGif.linkDetail} />
+      <GifDetail
+        title={oneGif.title}
+        id={oneGif.id}
+        link={oneGif.linkDetail}
+        Glink={oneGif.linkGiphy}
+      />
     );
   };
 
@@ -99,7 +104,7 @@ const Search = () => {
         style={{
           background: theme.ui,
           color: theme.syntax,
-          minHeight: '100vh',
+          minHeight: 'calc(100vh - 88px)',
           textAlign: 'center',
           paddingTop: '50px',
         }}
@@ -143,8 +148,8 @@ const Search = () => {
         </form>
         <br />
 
-        {idGif ? (
-          gifById(idGif)
+        {slug ? (
+          gifById(slug)
         ) : (
           <div>
             {' '}

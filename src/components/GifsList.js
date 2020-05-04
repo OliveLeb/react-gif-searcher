@@ -24,7 +24,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 }}
               >
                 {
-                  <Link to={`/${item.id}`}>
+                  <Link to={`/${item.param}`}>
                     <img
                       data-src={item.linkPrev}
                       src=''
@@ -53,7 +53,7 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                 }}
               >
                 {
-                  <Link to={`/${item.id}`}>
+                  <Link to={`/${item.param}`}>
                     <img
                       data-src={item.linkPrev}
                       title={item.title}
