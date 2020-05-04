@@ -37,6 +37,7 @@ const Search = () => {
         id={oneGif.id}
         link={oneGif.linkDetail}
         Glink={oneGif.linkGiphy}
+        history={history}
       />
     );
   };
