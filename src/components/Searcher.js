@@ -19,7 +19,6 @@ const Search = () => {
   const { state } = useContext(ThemeContext);
   const { isLightTheme, light, dark } = state;
   const theme = isLightTheme ? light : dark;
-  //const [offsetGif, setOffsetGif] = useState(0);
   const [etat, dispatch] = useReducer(GifReducer, initialState);
   const { search, query, numberResult, offsetGif } = etat;
   const { slug } = useParams();
