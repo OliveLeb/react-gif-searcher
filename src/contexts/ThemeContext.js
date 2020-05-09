@@ -18,4 +18,12 @@ const themeReducer = (state, action) => {
   }
 };
 
-export const { Context, Provider } = DataContext(themeReducer, initialState);
+const switchTheme = (dispatch) => {
+  return dispatch({ type: 'SWITCH_THEME' });
+};
+
+export const { Context, Provider } = DataContext(
+  themeReducer,
+  { switchTheme },
+  initialState
+);

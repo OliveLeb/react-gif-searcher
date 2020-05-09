@@ -1,33 +1,56 @@
 export const initialState = {
   search: '',
   query: '',
-  numberResult: 10,
   gifs: [],
+  numberResult: 20,
   totalCount: 0,
+  offsetGif: 0,
   isLoading: false,
   error: false,
   hasMore: false,
+  truc: false,
 };
 
-const GifReducer = (state, action) => {
+const GifReducer = (etat, action) => {
   switch (action.type) {
     case 'SET_SEARCH':
-      return { ...state, search: action.value };
-    case 'SET_QUERY':
-      return { ...state, query: state.search };
-    case 'FECTH_GIFS':
-      return { ...state, gifs: action.payload };
-    case 'LOAD_MORE':
-      return { ...state, numberResult: state.numberResult + 20 };
-    case '':
-      return { ...state };
-    case '':
-      return { ...state };
-    case '':
-      return { ...state };
-    case '':
-      return { ...state };
+      return { ...etat, search: action.value };
+    case 'ON_SUBMIT':
+      return {
+        ...etat,
+        query: etat.search,
+        numberResult: 20,
+        offsetGif: 0,
+      };
+    case 'FETCH_INIT':
+      return { ...etat, isLoading: true, error: false };
+    case 'FETCH_SUCCESS':
+      return {
+        ...etat,
+        isLoading: false,
+        isError: false,
+        //gifs: action.payload,
+      };
+    case 'FETCH_FAILURE':
+      return { ...etat, isLoading: false, isError: true };
+    case 'TOTAL_COUNT':
+      return { ...etat, totalCount: action.payload };
+    case 'HAS_MORE':
+      return { ...etat, hasMore: action.payload };
+    case 'TOGGLE_ISLOADING':
+      return { ...etat, isLoading: !etat.isLoading };
+    case 'SET_ERROR':
+      return { ...etat, error: !etat.error };
+    case 'INC_OFFSET':
+      return {
+        ...etat,
+        offsetGif: etat.offsetGif + etat.numberResult,
+      };
+    case 'RESET_GIFS':
+      return { ...etat, gifs: [] };
     default:
-      return state;
+      return etat;
   }
 };
+
+export default GifReducer;

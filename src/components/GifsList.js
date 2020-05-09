@@ -24,7 +24,6 @@ const GifsList = ({ gifs, lastGifsRef }) => {
               return (
                 <Link to={`/${item.param}`} key={item.id}>
                   <img
-                    //key={item.id}
                     data-src={item.linkPrev}
                     src=''
                     title={item.title}
@@ -33,8 +32,8 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                     className='gifRendered'
                     style={{
                       width: '100%',
-                      height: 'auto',
-                      background: 'green',
+                      minHeight: `calc(200px * ${item.size.height} / ${item.size.width} )`,
+                      background: 'transparent',
                     }}
                   />
                 </Link>
@@ -50,8 +49,8 @@ const GifsList = ({ gifs, lastGifsRef }) => {
                     className='gifRendered'
                     style={{
                       width: '100%',
-                      height: 'auto',
-                      background: 'green',
+                      minHeight: `calc(200px * ${item.size.height} / ${item.size.width} )`,
+                      background: 'transparent',
                       display: 'block',
                     }}
                   />

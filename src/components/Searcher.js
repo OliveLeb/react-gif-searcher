@@ -1,22 +1,27 @@
 import React, {
-  useState,
   useRef,
   useCallback,
   useContext,
   useEffect,
+  useReducer,
 } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { BsSearch } from 'react-icons/bs';
 import useGiphy from '../useGiphy';
 import { Context as ThemeContext } from '../contexts/ThemeContext';
 import GifsList from './GifsList';
 import GifDetail from './GifDetail';
+import SearchBar from './SearchBar';
+
+import GifReducer, { initialState } from '../reducers/GifReducer';
+//import InfiniteScroll from '../customHooks/InfiniteScroll';
 
 const Search = () => {
-  const [search, setSearch] = useState('');
-  const [query, setQuery] = useState('');
-  const [numberResult, setNumberResult] = useState(20);
-  const [offsetGif, setOffsetGif] = useState(0);
+  const { state } = useContext(ThemeContext);
+  const { isLightTheme, light, dark } = state;
+  const theme = isLightTheme ? light : dark;
+  //const [offsetGif, setOffsetGif] = useState(0);
+  const [etat, dispatch] = useReducer(GifReducer, initialState);
+  const { search, query, numberResult, offsetGif } = etat;
   const { slug } = useParams();
   const history = useHistory();
 
@@ -25,9 +30,6 @@ const Search = () => {
     numberResult,
     offsetGif
   );
-  const { state } = useContext(ThemeContext);
-  const { isLightTheme, light, dark } = state;
-  const theme = isLightTheme ? light : dark;
 
   const gifById = (slug) => {
     const oneGif = gifs.find((item) => item.param === slug);
@@ -50,17 +52,25 @@ const Search = () => {
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
-            setOffsetGif((prevOffSetGif) => prevOffSetGif + numberResult);
+            dispatch({ type: 'INC_OFFSET' });
           }
         },
         {
           threshold: 1.0,
         }
       );
+      console.log(node);
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasMore, numberResult]
+    [isLoading, hasMore]
   );
+  /*
+  const [lastGifsRef] = InfiniteScroll({
+    isLoading,
+    hasMore,
+    numberResult,
+    //  offsetGif,
+  });*/
 
   const gifRef = useRef(null);
   const gifObserver = useCallback((node) => {
@@ -84,6 +94,7 @@ const Search = () => {
         }
       });
     });
+
     intObs.observe(node);
   }, []);
 
@@ -93,16 +104,6 @@ const Search = () => {
       gifRef.current.forEach((gif) => gifObserver(gif));
     }
   }, [gifObserver, gifRef, gifs]);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (slug) {
-      history.push('/');
-    }
-    setQuery(search);
-    setNumberResult(20);
-    setOffsetGif(0);
-  };
 
   return (
     <>
@@ -116,42 +117,12 @@ const Search = () => {
         }}
       >
         <h1>GIF SEARCHER</h1>
-        <form onSubmit={onSubmit}>
-          <div
-            style={{
-              display: 'flex',
-              width: '80%',
-              margin: 'auto',
-            }}
-          >
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder='Search for GIFS !'
-              style={{
-                border: 'none',
-                height: '2em',
-                width: '100%',
-                paddingLeft: '10px',
-                fontSize: '1.5rem',
-              }}
-            />
-            <button
-              type='submit'
-              style={{
-                alignSelf: 'center',
-                fontSize: '1.5em',
-                border: 'none',
-                padding: '12px',
-                cursor: 'pointer',
-                background: '#fff',
-              }}
-            >
-              {' '}
-              <BsSearch style={{ display: 'block' }} />{' '}
-            </button>
-          </div>
-        </form>
+        <SearchBar
+          slug={slug}
+          history={history}
+          dispatch={dispatch}
+          search={search}
+        />
         <br />
 
         {slug ? (

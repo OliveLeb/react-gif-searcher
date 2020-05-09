@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 
-const DataContext = (reducer, initialState) => {
+const DataContext = (reducer, actions, initialState) => {
   const Context = createContext();
 
   const Provider = ({ children }) => {

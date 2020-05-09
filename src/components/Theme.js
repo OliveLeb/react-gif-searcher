@@ -3,7 +3,7 @@ import { FaSun, FaMoon } from 'react-icons/fa';
 import { Context as ThemeContext } from '../contexts/ThemeContext';
 
 const Theme = () => {
-  const { state, dispatch } = useContext(ThemeContext);
+  const { state, switchTheme } = useContext(ThemeContext);
   const { isLightTheme } = state;
 
   const button = {
@@ -13,15 +13,9 @@ const Theme = () => {
   return (
     <div>
       {isLightTheme ? (
-        <FaSun
-          style={button}
-          onClick={() => dispatch({ type: 'SWITCH_THEME' })}
-        />
+        <FaSun style={button} onClick={switchTheme} />
       ) : (
-        <FaMoon
-          style={button}
-          onClick={() => dispatch({ type: 'SWITCH_THEME' })}
-        />
+        <FaMoon style={button} onClick={switchTheme} />
       )}
     </div>
   );
