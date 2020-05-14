@@ -34,12 +34,13 @@ const Search = () => {
     const oneGif = gifs.find((item) => item.param === slug);
     return (
       <GifDetail
-        title={oneGif.title}
-        id={oneGif.id}
-        link={oneGif.linkDetail}
-        Glink={oneGif.linkGiphy}
+        // title={oneGif.title}
+        //id={oneGif.id}
+        //link={oneGif.linkDetail}
+        // Glink={oneGif.linkGiphy}
         history={history}
         dispatch={dispatch}
+        oneGif={oneGif}
       />
     );
   };
@@ -53,6 +54,7 @@ const Search = () => {
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
             dispatch({ type: 'INC_OFFSET' });
+            console.log('intersecting');
           }
         },
         {

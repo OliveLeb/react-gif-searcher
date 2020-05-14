@@ -1,16 +1,23 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import GifReducer, { initialState } from '../reducers/GifReducer';
-import { Redirect } from 'react-router-dom';
 
-const GifDetail = ({ title, id, link, Glink, dispatch, history }) => {
-  //const [dispatch] = useReducer(GifReducer, initialState);
+const GifDetail = ({ oneGif, history }) => {
+  const [gif, setGif] = useState({});
+  const storedGif = sessionStorage.getItem('gif');
 
   const goBack = () => {
     history.goBack();
-    //return <Redirect to='/' />;
-    //dispatch({ type: 'GO_BACK' });
+    sessionStorage.clear();
   };
+
+  useEffect(() => {
+    if (storedGif) {
+      setGif(JSON.parse(storedGif));
+    } else {
+      setGif(oneGif);
+      sessionStorage.setItem('gif', JSON.stringify(oneGif));
+    }
+  }, [oneGif, storedGif]);
   return (
     <>
       <div style={{ textAlign: 'left', marginLeft: '10%' }}>
@@ -21,12 +28,12 @@ const GifDetail = ({ title, id, link, Glink, dispatch, history }) => {
           <IoMdArrowRoundBack /> Retour
         </button>
       </div>
-      <div key={id}>
-        <h2>{title}</h2>
-        <img src={link} alt={title} autoPlay />
+      <div key={gif.id}>
+        <h2>{gif.title}</h2>
+        <img src={gif.linkDetail} alt={gif.title} autoPlay />
       </div>
       <div>
-        <a href={Glink} target='_blank' rel='noopener noreferrer'>
+        <a href={gif.Glink} target='_blank' rel='noopener noreferrer'>
           Voir sur Giphy
           <img
             src={require(`../assets/giphy-seeklogo.com.svg`)}
