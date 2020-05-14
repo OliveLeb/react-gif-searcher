@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import GifReducer, { initialState } from '../reducers/GifReducer';
+import { Redirect } from 'react-router-dom';
 
-const GifDetail = ({ title, id, link, Glink, history }) => {
+const GifDetail = ({ title, id, link, Glink, dispatch, history }) => {
+  //const [dispatch] = useReducer(GifReducer, initialState);
+
   const goBack = () => {
     history.goBack();
+    //return <Redirect to='/' />;
+    //dispatch({ type: 'GO_BACK' });
   };
   return (
     <>

@@ -10,20 +10,23 @@ const Theme = () => {
     fontSize: '1.5rem',
     cursor: 'pointer',
   };
-  const switchTheme = () => {
-    return dispatch({ type: 'SWITCH_THEME' });
-  };
   /*
   const switchTheme = () => {
-    console.log('this works');
+    return dispatch({ type: 'SWITCH_THEME' });
   };*/
 
   return (
     <div>
       {isLightTheme ? (
-        <FaSun style={button} onClick={switchTheme} />
+        <FaSun
+          style={button}
+          onClick={() => dispatch({ type: 'SWITCH_THEME' })}
+        />
       ) : (
-        <FaMoon style={button} onClick={switchTheme} />
+        <FaMoon
+          style={button}
+          onClick={() => dispatch({ type: 'SWITCH_THEME' })}
+        />
       )}
     </div>
   );

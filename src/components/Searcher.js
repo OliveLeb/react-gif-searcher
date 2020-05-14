@@ -39,6 +39,7 @@ const Search = () => {
         link={oneGif.linkDetail}
         Glink={oneGif.linkGiphy}
         history={history}
+        dispatch={dispatch}
       />
     );
   };
@@ -121,6 +122,7 @@ const Search = () => {
           history={history}
           dispatch={dispatch}
           search={search}
+          query={query}
         />
         <br />
 
@@ -134,6 +136,7 @@ const Search = () => {
               gifs={gifs}
               lastGifsRef={lastGifsRef}
               numberResult={numberResult}
+              dispatch={dispatch}
             />
           </div>
         )}

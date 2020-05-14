@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import MasonryLayout from './MasonryLayout';
 import PropTypes from 'prop-types';
 
-const GifsList = ({ gifs, lastGifsRef }) => {
+const GifsList = ({ gifs, lastGifsRef, dispatch, numberResult }) => {
   MasonryLayout.propTypes = {
     columns: PropTypes.number.isRequired,
     gap: PropTypes.number.isRequired,
@@ -22,10 +22,14 @@ const GifsList = ({ gifs, lastGifsRef }) => {
           {gifs.map((item, index) => {
             if (gifs.length === index + 1) {
               return (
-                <Link to={`/${item.param}`} key={item.id}>
+                <Link
+                  to={`/${item.param}`}
+                  key={item.id}
+                  onClick={() => dispatch({ type: 'RESET_OFFSET' })}
+                >
                   <img
                     data-src={item.linkPrev}
-                    src=''
+                    src={index < numberResult ? item.linkPrev : ''}
                     title={item.title}
                     alt={item.title}
                     ref={lastGifsRef}
@@ -40,12 +44,16 @@ const GifsList = ({ gifs, lastGifsRef }) => {
               );
             } else {
               return (
-                <Link to={`/${item.param}`} key={item.id}>
+                <Link
+                  to={`/${item.param}`}
+                  key={item.id}
+                  onClick={() => dispatch({ type: 'RESET_OFFSET' })}
+                >
                   <img
                     data-src={item.linkPrev}
                     title={item.title}
                     alt={item.title}
-                    src=''
+                    src={index < numberResult ? item.linkPrev : ''}
                     className='gifRendered'
                     style={{
                       width: '100%',

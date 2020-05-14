@@ -8,7 +8,7 @@ export const initialState = {
   isLoading: false,
   error: false,
   hasMore: false,
-  truc: false,
+  isError: false,
 };
 
 const GifReducer = (etat, action) => {
@@ -29,7 +29,12 @@ const GifReducer = (etat, action) => {
         ...etat,
         isLoading: false,
         isError: false,
-        //gifs: action.payload,
+        gifs: [...etat.gifs, ...action.payload],
+      };
+    case 'SET_GIFS_CACHED':
+      return {
+        ...etat,
+        gifs: [...action.payload],
       };
     case 'FETCH_FAILURE':
       return { ...etat, isLoading: false, isError: true };
@@ -48,6 +53,7 @@ const GifReducer = (etat, action) => {
       };
     case 'RESET_GIFS':
       return { ...etat, gifs: [] };
+
     default:
       return etat;
   }

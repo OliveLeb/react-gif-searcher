@@ -1,7 +1,8 @@
 import React from 'react';
 import { BsSearch } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
-const SearchBar = ({ slug, history, search, dispatch }) => {
+const SearchBar = ({ slug, history, search, dispatch, query }) => {
   const submitSearch = (dispatch) => {
     return (e) => {
       e.preventDefault();
