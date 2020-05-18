@@ -13,7 +13,6 @@ import GifDetail from './GifDetail';
 import SearchBar from './SearchBar';
 
 import GifReducer, { initialState } from '../reducers/GifReducer';
-//import InfiniteScroll from '../customHooks/InfiniteScroll';
 
 const Search = () => {
   const { state } = useContext(ThemeContext);
@@ -22,6 +21,7 @@ const Search = () => {
   const [etat, dispatch] = useReducer(GifReducer, initialState);
   const { search, query, numberResult, offsetGif } = etat;
   const { slug } = useParams();
+  //const { category } = useParams();
   const history = useHistory();
 
   const [gifs, isLoading, hasMore, error, totalCount] = useGiphy(
@@ -32,17 +32,7 @@ const Search = () => {
 
   const gifById = (slug) => {
     const oneGif = gifs.find((item) => item.param === slug);
-    return (
-      <GifDetail
-        // title={oneGif.title}
-        //id={oneGif.id}
-        //link={oneGif.linkDetail}
-        // Glink={oneGif.linkGiphy}
-        history={history}
-        dispatch={dispatch}
-        oneGif={oneGif}
-      />
-    );
+    return <GifDetail history={history} dispatch={dispatch} oneGif={oneGif} />;
   };
 
   const observer = useRef(null);
@@ -66,13 +56,6 @@ const Search = () => {
     },
     [isLoading, hasMore]
   );
-  /*
-  const [lastGifsRef] = InfiniteScroll({
-    isLoading,
-    hasMore,
-    numberResult,
-    //  offsetGif,
-  });*/
 
   const gifRef = useRef(null);
   const gifObserver = useCallback((node) => {

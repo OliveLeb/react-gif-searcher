@@ -23,9 +23,6 @@ function App() {
           <Route path='/explication' exact>
             <Explication />
           </Route>
-          <Route path='/search/:query' exact>
-            <Searcher />
-          </Route>
           <Route path='/:slug' exact>
             <Searcher />
           </Route>

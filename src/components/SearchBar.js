@@ -1,6 +1,6 @@
 import React from 'react';
-import { BsSearch } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import { BsSearch } from 'react-icons/bs';
 
 const SearchBar = ({ slug, history, search, dispatch, query }) => {
   const submitSearch = (dispatch) => {
@@ -38,6 +38,7 @@ const SearchBar = ({ slug, history, search, dispatch, query }) => {
             fontSize: '1.5rem',
           }}
         />
+
         <button
           type='submit'
           style={{
